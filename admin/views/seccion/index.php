@@ -9,6 +9,7 @@
       <th scope="col">sección</th>
       <th scope="col">Area</th>
       <th scope="col">Invernadero</th>
+      <th scope="col">Opciones</th>
     </tr>
   </thead>
   <tbody>
@@ -29,5 +30,3 @@
   </tbody>
 </table>
 <?php require('views/footer.php'); ?>
-
-  

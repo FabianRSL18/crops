@@ -1,30 +1,32 @@
 <?php
 require_once ('../sistema.class.php');
 class Usuario extends Sistema{
-    function create ($data) {
-        $result=[];
-        $this -> conexion();
-        $sql= "INSERT into usuario (correo,contrasena) 
-        VALUES (:correo,MD5(:contrasena));";
-        $insertar = $this-> con -> prepare($sql);
-        $insertar -> bindParam(':correo', $data['correo'],PDO::PARAM_STR);
-        $insertar -> bindParam(':contrasena', $data['contrasena'],PDO::PARAM_STR);
-        $insertar -> execute();
-        $result = $insertar ->rowCount();
-        return $result;
+    function create($data) {
+        $this->conexion();
+        $data = $data['data'];
+        $this->con->beginTransaction();
+        $sql = "INSERT INTO usuario (correo, contrasena) VALUES (:correo, :contrasena)";
+        $insertar = $this->con->prepare($sql);
+        $data['contrasena'] = md5($data['contrasena']);
+        $insertar->bindParam(':correo', $data['correo'], PDO::PARAM_STR);
+        $insertar->bindParam(':contrasena', $data['contrasena'], PDO::PARAM_STR);
+        $insertar->execute();
+        $this->con->commit();
+        return $insertar->rowCount();
     }
+
     function update($id, $data) {
         $this->conexion();
-        $result=[];
-        $sql = "UPDATE usuario SET correo=:correo, contrasena=:contrasena WHERE id_usuario=:id_usuario;";
-        $modificar = $this -> con -> prepare($sql);
-        $modificar -> bindParam(':id_usuario', $id,PDO::PARAM_INT);
-        $modificar -> bindParam(':correo', $data['correo'],PDO::PARAM_STR);
-        $modificar -> bindParam(':contrasena', $data['contrasena'],PDO::PARAM_STR);
-        $modificar -> execute();
-        $result = $modificar -> rowCount();
-        return $result;
+        $sql = "UPDATE usuario SET correo = :correo, contrasena = :contrasena WHERE id_usuario = :id_usuario";
+        $modificar = $this->con->prepare($sql);
+        $data['contrasena'] = md5($data['contrasena']);
+        $modificar->bindParam(':id_usuario', $id, PDO::PARAM_INT);
+        $modificar->bindParam(':correo', $data['correo'], PDO::PARAM_STR);
+        $modificar->bindParam(':contrasena', $data['contrasena'], PDO::PARAM_STR);
+        $modificar->execute();
+        return $modificar->rowCount();
     }
+
     function delete($id) {
         $result=[];
         $this-> conexion();
@@ -35,16 +37,18 @@ class Usuario extends Sistema{
         $result = $borrar -> rowCount();
         return $result;
     }
+    
     function readOne($id) {
         $this -> conexion();
-        $result=[];
+        $result = [];
         $query = "SELECT * FROM usuario where id_usuario=:id_usuario;";
         $sql = $this -> con -> prepare($query);
-        $sql - >bindParam(":id_usuario",$id,PDO::PARAM_INT);
+        $sql -> bindParam(":id_usuario",$id,PDO::PARAM_INT);
         $sql -> execute();
         $result = $sql -> fetch(PDO::FETCH_ASSOC);
         return $result;
     }
+
     function readAll(){
         $this -> conexion();
         $result=[];
@@ -54,5 +58,6 @@ class Usuario extends Sistema{
         $result = $sql -> fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+    
 }
 ?>
