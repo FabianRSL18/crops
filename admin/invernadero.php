@@ -25,7 +25,6 @@ switch ($accion) {
     case 'actualizar':
         $invernaderos = $app->readOne($id);
         include('views/invernadero/crear.php');
-
         break;
     case 'modificar':
         $data = $_POST['data'];
@@ -40,7 +39,6 @@ switch ($accion) {
         $invernaderos = $app->readAll();
         include('views/invernadero/index.php');
         break;
-
     case 'eliminar':
         if (!is_null($id)) {
             if (is_numeric($id)) {

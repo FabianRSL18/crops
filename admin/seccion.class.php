@@ -4,11 +4,7 @@ class Seccion extends Sistema{
     function create ($data) {
         $result=[];
         $this -> conexion();
-        $sql = "insert into seccion(seccion,area,id_invernadero) 
-        VALUES(
-        :seccion,
-        :area, 
-        :id_invernadero);";
+        $sql = "INSERT into seccion(seccion, area, id_invernadero) VALUES(:seccion,:area,:id_invernadero);";
         $insertar = $this -> con -> prepare($sql);
         $insertar -> bindParam(':seccion',$data['seccion'],PDO::PARAM_STR);
         $insertar -> bindParam(':area',$data['area'],PDO::PARAM_INT);
@@ -21,8 +17,7 @@ class Seccion extends Sistema{
     function update($id, $data) {
         $this->conexion();
         $result=[];
-        $sql = "UPDATE seccion SET seccion=:seccion, area=:area, 
-        id_invernadero=:id_invernadero WHERE id_seccion=:id_seccion;";
+        $sql = "UPDATE seccion SET seccion=:seccion, area=:area, id_invernadero=:id_invernadero WHERE id_seccion=:id_seccion;";
         $modificar = $this->con->prepare($sql);
         $modificar -> bindParam(':id_seccion', $id,PDO::PARAM_INT);
         $modificar -> bindParam(':seccion', $data['seccion'],PDO::PARAM_STR);
@@ -37,7 +32,7 @@ class Seccion extends Sistema{
         $this -> conexion();
         $result=[];
         if(is_numeric($id)){
-            $sql = "delete from seccion where id_seccion = :id_seccion";
+            $sql = "DELETE from seccion where id_seccion = :id_seccion";
             $borrar = $this -> con -> prepare($sql);
             $borrar -> bindParam(':id_seccion',$id,PDO::PARAM_INT);
             $borrar -> execute();
