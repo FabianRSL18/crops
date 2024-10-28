@@ -22,9 +22,7 @@
                 $selected = "";
                 if($secciones['id_invernadero'] == $invernadero['id_invernadero']){
                     $selected = "selected";
-
                 }
-                    
                 ?>
             <option value="<?php echo($invernadero['id_invernadero']); ?>" <?php echo($selected);?>><?php echo($invernadero['invernadero']); ?></option>
             <?php endforeach; ?>
