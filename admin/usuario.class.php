@@ -38,14 +38,37 @@ class Usuario extends Sistema {
     }
     function update($id, $data) {
         $this->conexion();
-        $sql = "UPDATE usuario SET correo = :correo, contrasena = :contrasena WHERE id_usuario = :id_usuario";
-        $modificar = $this->con->prepare($sql);
-        $data['contrasena'] = md5($data['contrasena']);
-        $modificar->bindParam(':id_usuario', $id, PDO::PARAM_INT);
-        $modificar->bindParam(':correo', $data['correo'], PDO::PARAM_STR);
-        $modificar->bindParam(':contrasena', $data['contrasena'], PDO::PARAM_STR);
-        $modificar->execute();
-        return $modificar->rowCount();
+        $rol = $data['rol'];
+        $data = $data['data'];
+        $this -> con -> beginTransaction();
+        try{
+            $sql = "UPDATE usuario SET correo = :correo, contrasena = :contrasena WHERE id_usuario = :id_usuario";
+            $modificar = $this->con->prepare($sql);
+            $data['contrasena'] = md5($data['contrasena']);
+            $modificar->bindParam(':id_usuario', $id, PDO::PARAM_INT);
+            $modificar->bindParam(':correo', $data['correo'], PDO::PARAM_STR);
+            $modificar->bindParam(':contrasena', $data['contrasena'], PDO::PARAM_STR);
+            $modificar->execute();
+            $sql = "DELETE FROM usuario_rol WHERE id_usuario = :id_usuario";
+            $borrar_rol = $this->con->prepare($sql);
+            $borrar_rol->bindParam(':id_usuario', $id, PDO::PARAM_INT);
+            $borrar_rol->execute();
+            if(!is_null($id)){
+                foreach($rol as $r => $k){
+                    $sql = "INSERT INTO usuario_rol(id_usuario,id_rol)
+                    VALUES(:id_usuario,:id_rol)";
+                    $insertar_rol = $this->con->prepare($sql);
+                    $insertar_rol->bindParam(':id_usuario', $id, PDO::PARAM_INT);
+                    $insertar_rol->bindParam(':id_rol', $r, PDO::PARAM_INT);
+                    $insertar_rol->execute();
+                }
+                $this->con->commit();
+                return $insertar_rol->rowCount(); 
+            }
+        }catch(Exeption $e){
+            $this->con->rollback();
+        }
+        return false;
     }
     function delete($id) {
         $this->conexion();
@@ -72,13 +95,19 @@ class Usuario extends Sistema {
     }
     function readAllRoles($id){
         $this->conexion();
-        $sql = "SELECT u.*, r.rol from usuario u 
+        $sql = "SELECT DISTINCT r.id_rol from usuario u 
         join usuario_rol ur on u.id_usuario = ur.id_usuario 
         join rol r on ur.id_rol = r.id_rol WHERE u.id_usuario=:id_usuario;";
         $consulta = $this->con->prepare($sql); 
         $consulta->bindParam(':id_usuario', $id, PDO::PARAM_INT);
         $consulta->execute();
-        return $consulta->fetchAll(PDO::FETCH_ASSOC);
+        $roles=[];
+        $roles = $consulta->fetchAll(PDO::FETCH_ASSOC);
+        $data=[];
+        foreach ($roles as $rol){
+            array_push($data, $rol['id_rol']);
+        }
+        return $data;
     }
 }
 ?>
