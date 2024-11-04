@@ -1,7 +1,7 @@
 <?php require('views/header/header_administrador.php') ?>
 <h1><?php if($accion == "crear"):echo("Nuevo");else: echo("Modificar ");endif; ?>Empleado</h1>
 
-<form action="empleado.php?accion=<?php if($accion=="crear"):echo('nuevo');else: echo('modificar&id='.$id);endif; ?>" method="post">
+<form action="empleado.php?accion=<?php if($accion=="crear"):echo('nuevo');else: echo('modificar&id='.$id);endif; ?>" method="post" enctype="multipart/form-data">
     <div class="row mb-3">
         <label for="primer_apellido" class="col-sm-2 col-form-label">Primer Apellido</label>
         <div class="col-sm-10">
@@ -52,7 +52,7 @@
     <div class="row mb-3">
         <label for="fotografia" class="col-sm-2 col-form-label">Fotografía</label>
         <div class="col-sm-10">
-            <input type="text" name="data[fotografia]" placeholder="URL de la fotografía" class="form-control" value="<?php if(isset($empleado['fotografia'])):echo($empleado['fotografia']);endif; ?>"/>
+            <input type="file" name="fotografia" placeholder="URL de la fotografía" class="form-control" />
         </div>
     </div>
     

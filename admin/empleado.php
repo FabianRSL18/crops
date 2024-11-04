@@ -16,6 +16,11 @@ switch ($accion) {
         break;
 
     case 'nuevo':
+        //print_r($_POST);
+        //print_r($_FILES);
+        move_uploaded_file($_FILES['fotografia']['tmp_name'],"C:\\wamp64\\www\\crops\\uploads\\".$_FILES['fotografia']['name']);
+        //echo("El archivo se cargo");
+        //die();
         $data = $_POST['data'];
         $resultado = $appEmpleado->create($data);
         if ($resultado) {
