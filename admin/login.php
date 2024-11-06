@@ -29,5 +29,3 @@ switch ($accion){
 }
 require_once('views/footer.php');
 ?>
-
-
