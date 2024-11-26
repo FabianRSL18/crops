@@ -64,9 +64,12 @@ switch($accion){
         $secciones = $app -> readAll();
         require_once("views/seccion/index.php");
         break;
+    case 'reporte':
+        $app -> reporte();
+        die();
+        break;
     default:
         $secciones = $app -> readAll();
         require_once("views/seccion/index.php");
-
 }
 ?>

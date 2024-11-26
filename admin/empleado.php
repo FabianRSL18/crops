@@ -64,6 +64,11 @@ switch ($accion) {
         require_once("views/empleado/index.php");
         break;
 
+    case 'reporte':
+        $appEmpleado -> reporte($id);
+        die();
+        break;
+
     default:
         $empleados = $appEmpleado->readAll();
         require_once("views/empleado/index.php");

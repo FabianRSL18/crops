@@ -35,6 +35,7 @@
                     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                         <a href="empleado.php?accion=actualizar&id=<?php echo $empleado['id_empleado']; ?>" class="btn btn-primary">Actualizar</a>
                         <a href="empleado.php?accion=eliminar&id=<?php echo $empleado['id_empleado']; ?>" class="btn btn-danger">Eliminar</a>
+                        <a href="empleado.php?accion=reporte&id=<?php echo $empleado['id_empleado']; ?>" class="btn btn-primary">Imprimir</a>
                     </div>
                 </td>
             </tr>
